@@ -116,7 +116,6 @@ namespace Fis_sstTest
                         numberOfZeros--;
                         body += '0';
                     }
-                    input = body;
                 }
             }
 
