@@ -1,6 +1,6 @@
 K:\ProjectsVS\Fis-sstTest\bin\Debug\Fis-sstTest.exe.config
 K:\ProjectsVS\Fis-sstTest\bin\Debug\Fis-sstTest.exe
 K:\ProjectsVS\Fis-sstTest\bin\Debug\Fis-sstTest.pdb
+K:\ProjectsVS\Fis-sstTest\obj\Debug\Fis-sstTest.csprojResolveAssemblyReference.cache
 K:\ProjectsVS\Fis-sstTest\obj\Debug\Fis-sstTest.exe
 K:\ProjectsVS\Fis-sstTest\obj\Debug\Fis-sstTest.pdb
-K:\ProjectsVS\Fis-sstTest\obj\Debug\Fis-sstTest.csprojResolveAssemblyReference.cache

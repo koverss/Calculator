@@ -4,6 +4,7 @@ namespace Fis_sstTest
 {
     public static class MyExtensions
     {
+        // function that takes value that is on the left of current operator
         public static string TakeLeft(this string userInput, int counter)
         {
             string leftSide = "";
@@ -21,6 +22,7 @@ namespace Fis_sstTest
             return leftSide;
         }
 
+        // function that takes value that is on the right of current operator
         public static string TakeRight(this string userInput, int counter)
         {
             string rightSide = "";
@@ -39,14 +41,16 @@ namespace Fis_sstTest
             return rightSide;
         }
 
+        // function that removes scientific notation from string
         public static string ScientificNotation(this string input)
         {
-            string tail = "";
-            string head = "";
-            string body = "";
-            string stringBeforeE = "";
+            var tail = "";
+            var head = "";
+            var body = "";
+            var stringBeforeE = "";
             bool isMatch;
 
+            // checking if first value is in scientific notation
             if (input.First() != '-')
             {
                 stringBeforeE = new string(input.Take(input.IndexOf('E')).ToArray());
@@ -58,12 +62,15 @@ namespace Fis_sstTest
                 isMatch = stringBeforeE.Contains('-') || stringBeforeE.Contains('+') || stringBeforeE.Contains('*') || stringBeforeE.Contains('/');
             }
 
+            // taking everything that is after number in scientific notation
             tail = new string(input.Skip(input.IndexOf('E')).ToArray().Skip(3).SkipWhile(x => x != '-' && x != '+' && x != '*' && x != '/').ToArray());
 
+            // if there is sth before number in scientific notation then we put it to 'head' variable
             if (isMatch)
             {
                 head = new string(input.Take(new string(input.TakeWhile(x => x != 'E').ToArray()).LastIndexOfAny(new char[] { '-', '+', '*', '/' }) + 1).ToArray());
 
+                // creating 'body' as value before letter 'E'
                 if (head != "")
                     body = new string(input.Take(input.IndexOf('E')).ToArray()).Replace(head, "");
                 else
@@ -71,15 +78,18 @@ namespace Fis_sstTest
             }
             else
             {
+                // creating 'body' as value before letter 'E'
                 body = stringBeforeE;
             }
-
+            // index of dot in number; -1 if there is no dot
             int dotIndex = body.IndexOf('.');
-            string tempResult = "";
+            var tempResult = "";
+            // parsing power from scientific notation
             string pow = new string(input.Skip(input.IndexOf('E')).Skip(2).TakeWhile(x => x != '-' && x != '+' && x != '*' && x != '/').ToArray());
             double currentPow = double.Parse(pow);
             double numberOfZeros = 0;
 
+            // adding 0 at the end or moving dot deeper into number depending of sign in front of power
             if (input.Skip(input.IndexOf('E') + 1).First() == '-')
             {
                 numberOfZeros = currentPow - dotIndex;
@@ -125,6 +135,7 @@ namespace Fis_sstTest
                 body = '-' + body;
             }
 
+            // returning new string with new number without notation
             return head + body + tail;
         }
     }

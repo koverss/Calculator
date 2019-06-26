@@ -1,10 +1,14 @@
-﻿using System.Linq;
+﻿using System;
+using System.Data;
+using System.Linq;
 
 namespace Fis_sstTest
 {
-    public static class MathAndValidation
+    public class MathAndValidation : ICalculations
     {
-        private static int CalculateIndex(string userInput)
+        // function that calculates index of operator that should be considered 
+        // in current Calculate function go through
+        public int CalculateIndex(string userInput)
         {
             int ind = -2;
 
@@ -47,32 +51,39 @@ namespace Fis_sstTest
             return ind;
         }
 
-        public static string Calculate(string userInput)
+        // recursive function that in every go through does next in order operation
+        public string Calculate(string userInput)
         {
+            // checking if string contains only one value, if so, it will be returned
             if ((!userInput.Contains('-') || userInput.Contains('-') && userInput.IndexOf('-') == 0 && userInput.Count(x => x == '-') == 1) 
                 && !userInput.Contains('+') && !userInput.Contains('*') && !userInput.Contains('/'))
                 return userInput;
             else
             {
+                // checking and removing scientific notation
                 if(userInput.Contains('E'))
                     userInput = userInput.ScientificNotation();
 
+                // again checking if newly provided number can be returned
                 if ((!userInput.Contains('-') || userInput.Contains('-') && userInput.IndexOf('-') == 0 && userInput.Count(x => x == '-') == 1)
                 && !userInput.Contains('+') && !userInput.Contains('*') && !userInput.Contains('/'))
                     return userInput;
 
-                string leftSide = "";
-                string rightSide = "";
+                var leftSide = "";
+                var rightSide = "";
 
+                // calculating index of operator that should be taken care of in first order
                 int ind = CalculateIndex(userInput);
                 double result = 0;
 
+                // taking left and right value of that operator
                 leftSide = userInput.TakeLeft(ind);
                 rightSide = userInput.TakeRight(ind);
 
                 if (userInput.First() == '-')
                     leftSide = '-' + leftSide;
-
+                
+                // calculating reslut of current operation
                 if (userInput[ind].Equals('*'))
                     result = double.Parse(leftSide) * double.Parse(rightSide); // *
                 else if (userInput[ind].Equals('/'))
@@ -86,7 +97,8 @@ namespace Fis_sstTest
                 else
                     result = double.Parse(leftSide) - double.Parse(rightSide);  // -
 
-                string leftSideToConcat = "";
+                // concatenating everything together
+                var leftSideToConcat = "";
 
                 if (leftSide.First() == '-')
                     leftSideToConcat = new string(userInput.Take(ind).ToArray());
@@ -108,9 +120,17 @@ namespace Fis_sstTest
                     rightSideToConcat = "";
 
                 userInput = leftSideToConcat + resultToConcat + rightSideToConcat;
-
+                // calling function again but with new string
                 return Calculate(userInput);
             }
+        }
+
+        // function from DataTable class that calculates result (to compare)
+        public double Eval(string userInput)
+        {
+            DataTable dt = new DataTable();
+            var result = (double)dt.Compute(userInput, null);
+            return result;
         }
     }
 }

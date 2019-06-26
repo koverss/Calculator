@@ -1,10 +1,13 @@
 ﻿using System;
+using System.Data;
 using System.Text.RegularExpressions;
 
 namespace Fis_sstTest
 {
     class Program
     {
+        static MathAndValidation mav = new MathAndValidation();
+
         private static void Main(string[] args)
         {
             string input;
@@ -15,8 +18,10 @@ namespace Fis_sstTest
             }
             while (!Regex.IsMatch(input, @"^(\d+[-+*/])*\d+$"));
 
-            Console.WriteLine("\nResult: " + MathAndValidation.Calculate(input) + "\n");
-
+            Console.WriteLine("\nResult: " + mav.Calculate(input) + "\n");
+            var dtEvaluateResult = mav.Eval(input);
+            Console.WriteLine($"\nResult: {(double)new DataTable().Compute(input,null):0.##############################}\n");
+            Console.WriteLine($"\nResult: {mav.Eval(input):0.##############################}\n");
             ContinueMessage();
             Console.ReadLine();
         }
@@ -52,7 +57,7 @@ namespace Fis_sstTest
                 }
                 while (!Regex.IsMatch(input, "^(\\d+[-+*/])*\\d+$")); //"^(\\d+[-+*/])+\\d+$"
 
-                Console.WriteLine("\nResult: " + MathAndValidation.Calculate(input) + "\n");
+                Console.WriteLine("\nResult: " + mav.Calculate(input) + "\n");
 
                 ContinueMessage();
                 Console.ReadLine();
